@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import com.taiger.nlp.ner.model.Constants;
@@ -19,6 +20,7 @@ import opennlp.tools.namefind.TokenNameFinderModel;
 import opennlp.tools.util.Span;
 
 @Log4j2
+@Component
 public class LocationNER implements NER {
 
 	private NameFinderME nameFinderEn;

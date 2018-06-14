@@ -2,6 +2,7 @@ package com.taiger.nlp.ner.tokenizer;
 
 import java.io.IOException;
 
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import com.taiger.nlp.ner.model.Constants;
@@ -13,6 +14,7 @@ import opennlp.tools.tokenize.TokenizerME;
 import opennlp.tools.tokenize.TokenizerModel;
 
 @Log4j2
+@Component
 public class METokenizer implements Tokenizer {
 	
 	private TokenizerME tokenizer;

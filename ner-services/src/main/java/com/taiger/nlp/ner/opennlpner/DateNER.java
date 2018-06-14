@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.antlr.runtime.tree.Tree;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import com.joestelmach.natty.DateGroup;
@@ -24,6 +25,7 @@ import opennlp.tools.namefind.TokenNameFinderModel;
 import opennlp.tools.util.Span;
 
 @Log4j2
+@Component
 public class DateNER implements NER {
 	
 	private NameFinderME nameFinder;
