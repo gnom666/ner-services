@@ -1,0 +1,18 @@
+version: '3'
+services:
+
+  mysql-ner:
+    container_name: mysql-ner
+    restart: always
+    image: mysql:5.7
+    environment:
+      - MYSQL_USER=root
+      - MYSQL_ROOT_PASSWORD=Qazwsxedc.123
+      - MYSQL_DATABASE=ip2location
+      - MYSQL_USER=admin 
+      - MYSQL_PASSWORD=Qazwsxedc.123
+    command: mysqld --lower_case_table_names=1 --skip-ssl
+    volumes:
+      - datavolume-ner:/var/lib/mysql       # persistence
+volumes:
+  datavolume-ner:
