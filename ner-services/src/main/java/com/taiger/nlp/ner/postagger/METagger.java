@@ -2,7 +2,6 @@ package com.taiger.nlp.ner.postagger;
 
 import java.io.IOException;
 
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import com.taiger.nlp.ner.model.Constants;
@@ -13,7 +12,6 @@ import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
 
 @Log4j2
-@Component
 public class METagger implements POSTagger {
 
 	private POSTaggerME tagger;

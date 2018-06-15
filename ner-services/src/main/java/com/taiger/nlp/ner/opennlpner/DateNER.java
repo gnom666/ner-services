@@ -9,7 +9,6 @@ import java.util.Set;
 
 import org.antlr.runtime.tree.Tree;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import com.joestelmach.natty.DateGroup;
@@ -25,7 +24,6 @@ import opennlp.tools.namefind.TokenNameFinderModel;
 import opennlp.tools.util.Span;
 
 @Log4j2
-@Component
 public class DateNER implements NER {
 	
 	private NameFinderME nameFinder;
@@ -58,7 +56,9 @@ public class DateNER implements NER {
 		for (Span span : spans) {
 			sentence.getS().get(span.getStart()).setNerTag(Constants.B + Constants.DATE);
 			sentence.getS().get(span.getStart()).setNerProb(nameFinder.probs()[span.getStart()]);
-			sentence.getS().get(span.getStart()).setPeriods(findPeriods(getYear(tokens, span)));
+			
+			findPeriods(getYear(tokens, span)).forEach(sentence::addPeriod);
+			
 			for (int i = span.getStart() + 1; i < span.getEnd(); i++) {
 				sentence.getS().get(i).setNerTag(Constants.I + Constants.DATE);
 				sentence.getS().get(i).setNerProb(nameFinder.probs()[i]);
@@ -67,30 +67,10 @@ public class DateNER implements NER {
 		
 		extractDates(sentence);
 		
-		correctPeriodsPositions (sentence);
-		
 		return sentence;
 	}
 	
-	private void correctPeriodsPositions(Sentence sentence) {
-		int size = sentence.getS().size();
-		
-		for (int i = 0; i < size; i++) {
-			Word w = sentence.getS().get(i);
-			if (w.getNerTag().contains(Constants.I + Constants.DATE) && !w.getPeriods().isEmpty()) {
-				Set<Period> periods = w.getPeriods();
-				boolean found = false;
-				for (int j = i; j >= 0 && !found; j--) {
-					if (sentence.getS().get(j).getNerTag().contains(Constants.B + Constants.DATE)) {
-						sentence.getS().get(j).getPeriods().addAll(periods);
-						w.setPeriods(new HashSet<>());
-					}
-				}
-			}
-		}
-	}
-
-	private int getYear (String[] tokens, Span span) {
+		private int getYear (String[] tokens, Span span) {
 		Assert.notNull(span, "span shouldn't be null");
 		Assert.notNull(tokens, "tokens shouldn't be null");
 		Assert.isTrue(tokens.length > span.getEnd(), "index out of range");
@@ -152,23 +132,16 @@ public class DateNER implements NER {
 		Parser parser = new Parser();
 		List<DateGroup> groups = parser.parse(sentence.getOriginal());
 		for(DateGroup group : groups) {
-			//List<Date> dates = group.getDates();
-			//int line = group.getLine();
-			//String syntaxTree = group.getSyntaxTree().toStringTree();
-			//Map<String, List<ParseLocation>> parseMap = group.getParseLocations();
-			//boolean isRecurreing = group.isRecurring();
-			//Date recursUntil = group.getRecursUntil();
 			int column = group.getPosition();
 			String matchingValue = group.getText();
 			
 			int offset = column - 1;
 			int end = offset + matchingValue.length();
 			
-			List<Period> periods = extractPeriods (group);
+			extractPeriods (group).forEach(sentence::addPeriod);
 			for (Word w : sentence.getS()) {
 				if (w.getOffset() == offset) {
 					w.setNerTag(Constants.B + Constants.DATE);
-					periods.forEach(w.getPeriods()::add);
 				}	else if (w.getOffset() > offset && w.getOffset() < end) {
 					w.setNerTag(Constants.I + Constants.DATE);
 				}

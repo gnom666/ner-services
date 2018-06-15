@@ -1,8 +1,5 @@
 package com.taiger.nlp.ner.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,9 +19,6 @@ public class Word {
 	private int position;
 	private int offset;
 	
-	private Location location;
-	private Set<Period> periods;
-	
 	public Word (String w, String nerTag, Double tokenProb, int position, int offset) {
 		this.w = w;
 		this.nerTag = nerTag;
@@ -34,8 +28,6 @@ public class Word {
 		
 		this.posTag = "";
 		this.nerProb = 0.0;
-		this.location = null;
-		this.periods = new HashSet<>();
 	}
 	
 	public Word () {
@@ -46,7 +38,5 @@ public class Word {
 		this.posTag = "";
 		this.nerProb = 0.0;
 		this.offset = 0;
-		this.location = null;
-		this.periods = new HashSet<>();
 	}
 }

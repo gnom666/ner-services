@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import com.taiger.nlp.ner.model.Constants;
@@ -20,7 +19,6 @@ import opennlp.tools.namefind.TokenNameFinderModel;
 import opennlp.tools.util.Span;
 
 @Log4j2
-@Component
 public class LocationNER implements NER {
 
 	private NameFinderME nameFinderEn;
@@ -62,7 +60,7 @@ public class LocationNER implements NER {
 		for (Span span : spansEn) {
 			sentence.getS().get(span.getStart()).setNerTag(Constants.B + Constants.LOCATION);
 			sentence.getS().get(span.getStart()).setNerProb(nameFinderEn.probs()[span.getStart()]);
-			sentence.getS().get(span.getStart()).setLocation(findLocation(Constants.formChunk(tokens, span)));
+			sentence.addLocation(findLocation(Constants.formChunk(tokens, span)));
 			
 			for (int i = span.getStart() + 1; i < span.getEnd(); i++) {
 				sentence.getS().get(i).setNerTag(Constants.I + Constants.LOCATION);
@@ -82,7 +80,7 @@ public class LocationNER implements NER {
 		for (Span span : spansEs) {
 			sentence.getS().get(span.getStart()).setNerTag(Constants.B + Constants.LOCATION);
 			sentence.getS().get(span.getStart()).setNerProb(nameFinderEs.probs()[span.getStart()]);
-			sentence.getS().get(span.getStart()).setLocation(findLocation(Constants.formChunk(tokens, span)));
+			sentence.addLocation(findLocation(Constants.formChunk(tokens, span)));
 			
 			for (i = span.getStart() + 1; i < span.getEnd(); i++) {
 				sentence.getS().get(i).setNerTag(Constants.I + Constants.LOCATION);

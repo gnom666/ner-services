@@ -44,4 +44,10 @@ public class Location {
 	@Transient
 	private String undeterminedName;
 	
+	public boolean equal (Location l) {
+		return (this.countryName.equals(l.getCountryName()) &&
+				this.regionName.equals(l.getRegionName()) &&
+				this.cityName.equals(l.getCityName()));
+	}
+	
 }

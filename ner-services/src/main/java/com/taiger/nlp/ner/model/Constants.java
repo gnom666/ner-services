@@ -11,12 +11,12 @@ public class Constants {
 	public static final String LOCATION = "LOCATION";
 	public static final String DATE = "DATE";
 	
-	public static final String NER_ES_DATE = "es-ner-misc.bin";
-	public static final String NER_EN_DATE = "en-ner-date.bin";
-	public static final String NER_ES_LOCATION = "es-ner-location.bin";
-	public static final String NER_EN_LOCATION = "en-ner-location.bin";
-	public static final String TOKEN_EN = "en-token.bin";
-	public static final String TAGGER_EN = "en-pos-maxent.bin";
+	public static final String NER_ES_DATE = "models/es-ner-misc.bin";
+	public static final String NER_EN_DATE = "models/en-ner-date.bin";
+	public static final String NER_ES_LOCATION = "models/es-ner-location.bin";
+	public static final String NER_EN_LOCATION = "models/en-ner-location.bin";
+	public static final String TOKEN_EN = "models/en-token.bin";
+	public static final String TAGGER_EN = "models/en-pos-maxent.bin";
 	
 	public static final int MAXINT = 999999;
 	

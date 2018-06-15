@@ -7,11 +7,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.taiger.nlp.ner.model.Configurations;
 import com.taiger.nlp.ner.model.Sentence;
-import com.taiger.nlp.ner.opennlpner.DateNER;
-import com.taiger.nlp.ner.opennlpner.LocationNER;
-import com.taiger.nlp.ner.postagger.METagger;
-import com.taiger.nlp.ner.tokenizer.METokenizer;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -21,16 +18,7 @@ import lombok.extern.log4j.Log4j2;
 public class NERServices {
 	
 	@Autowired
-	private DateNER dateNER;
-	
-	@Autowired
-	private LocationNER locationNER;
-	
-	@Autowired
-	private METokenizer tokenizer;
-	
-	@Autowired
-	private METagger tagger;
+	private Configurations config;
 
 	@RequestMapping(value="/annotate", method=RequestMethod.GET, produces="application/json;charset=UTF-8")
     public Sentence nerAnnotations(@RequestParam(value="sentence", defaultValue="") String sentence) {
@@ -38,10 +26,10 @@ public class NERServices {
 		Sentence result = new Sentence();
 		if (sentence.trim().isEmpty()) return result;
 		
-		result = tokenizer.tokenize(sentence.trim());
-		result = tagger.annotate(result);
-		result = dateNER.annotate(result);
-		result = locationNER.annotate(result);
+		result = config.tokenizer().tokenize(sentence.trim());
+		result = config.tagger().annotate(result);
+		result = config.dateNER().annotate(result);
+		result = config.locationNER().annotate(result);
 		
 		log.info(result.toString());
 		
